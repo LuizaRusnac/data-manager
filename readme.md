@@ -1,6 +1,6 @@
-# Data Manager
+# Data Forge
 
-Data Manager is a Python package designed to provide a comprehensive suite of tools specialized in managing and analyzing data. It offers a user-friendly toolkit suitable for individuals of all levels of expertise. This initial release encompasses the following features:
+Data Forge is a Python package designed to provide a comprehensive suite of tools specialized in managing and analyzing data. It offers a user-friendly toolkit suitable for individuals of all levels of expertise. This initial release encompasses the following features:
 
 - Effortless reading of datafiles with support for Pandas-compatible extensions.
 - Simplified dataframe creation by specifying column names and corresponding values.
@@ -13,7 +13,7 @@ Data Manager is a Python package designed to provide a comprehensive suite of to
 - Creation of fold columns for conducting stratified k-fold analyses.
 
 # Components
-## 'CreateDataPD' Class
+## 'PDBuilder' Class
 This class enables the creation and manipulation of Pandas DataFrames. It supports the following functionalities:
 - Reading data from various file formats: CSV, Excel, JSON, Parquet, Feather, and Pickle.
 - Generating unique identifiers for rows.
@@ -22,8 +22,8 @@ This class enables the creation and manipulation of Pandas DataFrames. It suppor
 - Retrieving column names.
 - Printing specific columns.
 
-## 'PDNumericAnalysis' Class
-This class extends the CreateDataPD class and provides additional functionalities for numerical analysis and preprocessing. It includes the following features:
+## 'PDNumPro' Class
+This class extends the PDBuilder class and provides additional functionalities for numerical analysis and preprocessing. It includes the following features:
 
 - Computing statistics for numerical columns.
 - Plotting histograms.
@@ -44,19 +44,19 @@ This toolkit requires the following dependencies:
 ## Installation
 To install the dependencies, run:
 ```python
-pip install requirements.txt
+pip install dforge
 ```
 
 ## Usage
-You can use this toolkit in your Python projects by importing the necessary classes and functions. Here's an example of how to use the CreateDataPD class:
+You can use this toolkit in your Python projects by importing the necessary classes and functions. Here's an example of how to use the PDBuilder class:
 
 ```python
-from data_analysis_toolkit import CreateDataPD
+import dforge as df
 
 # Create a DataFrame from data
 data = [[1, 'A', 10], [2, 'B', 20], [3, 'C', 30]]
 columns = ['ID', 'Category', 'Value']
-data_pd = CreateDataPD(data=data, columns=columns)
+data_pd = df.PDBuilder(data=data, columns=columns)
 
 # Display DataFrame
 data_pd.show_dataset()
@@ -69,7 +69,7 @@ data_pd.add_data(new_data)
 data_pd.show_dataset()
 ```
 
-# Work in progress..
+# Work in progress...
 
 Stay tuned for upcoming releases, which will incorporate the following enhancements:
 - Missing data completion functionality.

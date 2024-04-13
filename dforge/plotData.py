@@ -12,18 +12,22 @@ class CustomPlot:
     def plot_line(self, x, y, label="Data"):
         self.ax.plot(x, y, label=label)
 
-    def plot_bar(self, height, label="Data", show_numbers=False, 
-                map_max_space=1, text_ha='center',
-                text_va='bottom', cmap='winter', percentage=False, **kwargs):
+    def plot_bar(self, height, label=None, show_numbers=False, 
+                map_max_space=1, cmap='winter', percentage=False, **kwargs):
         cmap = get_cmap(cmap)
         colors = cmap(np.linspace(0, map_max_space, len(height)))
 
         for index, value in enumerate(height):
             self.ax.bar(index, value, color=colors[index], **kwargs)
+
             if show_numbers:
                 self._annotate_bar(value, index, colors[index], percentage)
 
         self._configure_axes(len(height))
+
+        if not label is None:
+            self.ax.set_xticklabels(label, rotation=45)
+
 
     def histogram_plot(self, values, title="Histogram", **kwargs):
         bins = kwargs.pop("bins", None)
@@ -56,3 +60,10 @@ class CustomPlot:
         self.ax.grid(axis='y', linestyle='--', alpha=0.7)
         self.ax.set_xticklabels(range(num_heights), rotation=45)
         self.ax.set_xticks(range(num_heights))
+
+    def plot_histogram_non_numeric_data(self, data):
+        counts = {}
+        for item in data:
+            counts[item] = counts.get(item, 0) + 1
+        self.ax.bar(counts.keys(), counts.values())
+        

@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 import random
 import math
-from Scripts.plotData import CustomPlot
+from dforge.plotData import CustomPlot
 from sklearn.model_selection import StratifiedKFold
 
-class CreateDataPD:
+class PDBuilder:
     """  A class used to create a Pandas DataFrame with the possibility of reading from a file.
     
     This class provides a convenient way to create Pandas DataFrames by specifying columns and values,
@@ -180,7 +180,7 @@ class CreateDataPD:
         """
         print(self.dataframe[columns_name])
 
-class PDNumericAnalysis(CreateDataPD):
+class PDNumPro(PDBuilder):
     """
     A class for performing numeric analysis on Pandas DataFrames.
 
