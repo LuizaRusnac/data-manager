@@ -310,7 +310,13 @@ class PDNumPro(PDBuilder):
         return stats_dict
     
     def show_numeric_columns_statistics(self, column_names='Numeric'):
-        """ Method computing 
+        """ Method computing columns statistics and show it in table.
+
+        Args:
+            column_names (str or list of str): Default is 'Numeric' and is computing the
+                statistics for all numeric columns and show in a table. Can be computed for
+                a column as string or for multiple columns as list of strings. If the column
+                given is not a numeric one, a warrning will be shown.
         """
         if column_names == 'Numeric':
             column_names = self.find_numeric_columns()  
@@ -318,7 +324,7 @@ class PDNumPro(PDBuilder):
         statistics = []
         if isinstance(column_names, str):
             column_names = [column_names] 
-            
+
         if isinstance(column_names, list):
             for column in column_names:
                 if pd.api.types.is_numeric_dtype(self.dataframe[column]):
@@ -466,7 +472,7 @@ class PDNumPro(PDBuilder):
             overwrite (bool): If True, the column will be overwrite, otherwise, a new column will be creaded with {column_name}_numeric. (Optional)
         """
         unique_values = self.dataframe[column_name].unique()
-        self.dictionary[column_name] = {"values": unique_values, "number_values": list(range(len(unique_values)))}
+        self.dictionary_discretized_data[column_name] = {"values": unique_values, "number_values": list(range(len(unique_values)))}
         mapping = {value: index for index, value in enumerate(unique_values)}
         self.dataframe[column_name] = self.dataframe[column_name].map(mapping) if overwrite else self.dataframe[f"{column_name}_numeric"]
 
