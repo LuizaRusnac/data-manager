@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import random
 import math
+from tabulate import tabulate
 from dforge.plotData import CustomPlot
 from sklearn.model_selection import StratifiedKFold
 
@@ -307,6 +308,32 @@ class PDNumPro(PDBuilder):
                                 'idxs': pd.Index(self.dataframe[column_name]).get_indexer_for(self.dataframe[column_name][self.dataframe[column_name].isna()])}
             }
         return stats_dict
+    
+    def show_numeric_columns_statistics(self, column_names='Numeric'):
+        """ Method computing 
+        """
+        if column_names == 'Numeric':
+            column_names = self.find_numeric_columns()  
+
+        statistics = []
+        if isinstance(column_names, str):
+            column_names = [column_names] 
+            
+        if isinstance(column_names, list):
+            for column in column_names:
+                if pd.api.types.is_numeric_dtype(self.dataframe[column]):
+                    columns_statistics = self.column_statistics(column)
+                    statistics.append([column, round(columns_statistics['mean'], 2),
+                                    round(columns_statistics['std'], 2), 
+                                    round(columns_statistics['minim'], 2),
+                                    round(columns_statistics['maxim'], 2)])
+                else:
+                    print(f"\033[93mWarrning: The column '{column}' contains non-numeric data and statistics cannot be computed.\033[0m")
+        else:
+            raise TypeError("column_names must be either string or list")
+
+        table_header = ['MEAN', 'STD', 'MIN', 'MAX']
+        print(tabulate(statistics, headers=table_header, tablefmt='fancy_grid', numalign='right'))
 
     def plot_histogram(self, column_name, **kwargs):
         """ Method for plotting the histogram of a column
