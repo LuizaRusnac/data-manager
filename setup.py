@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dforge',
-    version='1.0.0',
+    version='2.1.3',
     packages=find_packages(),
     author='Luiza Rusnac',
     author_email='luiza.rusnac93@gmail.com',
@@ -22,5 +22,6 @@ setup(
         'numpy',
         'pandas',
         'scikit-learn',
+        'tabulate',
     ],
 )

@@ -180,6 +180,24 @@ class PDBuilder:
             columns_name (str or list of str): Column names to be showing
         """
         print(self.dataframe[columns_name])
+    
+    def save_data(self, filename, file_extension='csv', **kwargs):
+        """ Method for saving dataframe on supported formats.
+
+        Args:
+            filename (str): The filename for the saved dataframe.
+            file_extention (str): The desired file extension. Supported files: ['csv', 'xlsx', 'xls', 'json', 'parquet', 'feather', 'pickle'].
+                Optional. Default = 'csv'
+        """
+        supported_extensions = ['csv', 'xlsx', 'xls', 'json', 'parquet', 'feather', 'pickle']
+        
+        if file_extension in supported_extensions:
+            file_extension = 'excel' if file_extension == 'xlsx' or file_extension == 'xls' else file_extension
+            save_function = getattr(self.dataframe, f"to_{file_extension}")
+            save_function(filename, **kwargs)
+        else:
+            raise ValueError("Unsupported file extension. Supported extensions are: {}".format(', '.join(supported_extensions)))
+
 
 class PDNumPro(PDBuilder):
     """
@@ -528,3 +546,5 @@ class PDNumPro(PDBuilder):
         self.dataframe["fold"] = -1  
         for fold, (train_idx, val_idx) in enumerate(skf.split(self.dataframe, self.dataframe[label_column])):
             self.dataframe.loc[val_idx, 'fold'] = fold
+
+        
