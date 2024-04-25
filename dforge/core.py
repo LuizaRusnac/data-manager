@@ -181,14 +181,14 @@ class PDBuilder:
         """
         print(self.dataframe[columns_name])
     
-    def save_data(self, filename, file_extension='csv', **kwargs):
+    def save_data(self, filename, **kwargs):
         """ Method for saving dataframe on supported formats.
 
         Args:
             filename (str): The filename for the saved dataframe.
-            file_extention (str): The desired file extension. Supported files: ['csv', 'xlsx', 'xls', 'json', 'parquet', 'feather', 'pickle'].
-                Optional. Default = 'csv'
+            **kwargs: The desired file extension. Supported files: ['csv', 'xlsx', 'xls', 'json', 'parquet', 'feather', 'pickle'].
         """
+        file_extension = filename.split('.')[-1].lower()
         supported_extensions = ['csv', 'xlsx', 'xls', 'json', 'parquet', 'feather', 'pickle']
         
         if file_extension in supported_extensions:
@@ -546,5 +546,28 @@ class PDNumPro(PDBuilder):
         self.dataframe["fold"] = -1  
         for fold, (train_idx, val_idx) in enumerate(skf.split(self.dataframe, self.dataframe[label_column])):
             self.dataframe.loc[val_idx, 'fold'] = fold
+
+    def add_columns(self, column_names, values, default_value=None):
+        if isinstance(column_names, str):
+            column_names = [column_names]
+
+        if not isinstance(values, list):
+            values = [[values]] * len(column_names)
+        else:
+            if len(column_names) != len(values):
+                raise ValueError("Length of column_names and values must be the same.")
+            # Ensure values are lists
+            values = [[value] if not isinstance(value, list) else value for value in values]
+
+        for col_name, col_values in zip(column_names, values):
+            if len(col_values) == 1:
+                value = col_values[0]
+                if default_value is not None and value is None:
+                    value = default_value
+                self.dataframe[col_name] = value
+            else:
+                if len(col_values) != len(self.dataframe):
+                    raise ValueError("Length of values must match the number of rows in the DataFrame.")
+                self.dataframe[col_name] = col_values
 
         
